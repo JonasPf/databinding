@@ -63,18 +63,10 @@ class MainFrame ( wx.Frame ):
 		
 		bSizer31.Add( sbSizer5, 0, 0, 5 )
 		
-		self.autobindctrl = wx.CheckBox( self, wx.ID_ANY, u"Automatic binding from the controls to the object", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer31.Add( self.autobindctrl, 0, wx.ALL, 5 )
-		
 		bSizer33 = wx.BoxSizer( wx.HORIZONTAL )
 		
 		self.sync_object_to_ctrls = wx.Button( self, wx.ID_ANY, u"Sync Object to Ctrls", wx.DefaultPosition, wx.DefaultSize, 0 )
 		bSizer33.Add( self.sync_object_to_ctrls, 0, wx.ALL, 5 )
-		
-		self.sync_ctrls_to_object = wx.Button( self, wx.ID_ANY, u"Sync Ctrls to Object", wx.DefaultPosition, wx.DefaultSize, 0 )
-		self.sync_ctrls_to_object.Enable( False )
-		
-		bSizer33.Add( self.sync_ctrls_to_object, 0, wx.ALL, 5 )
 		
 		
 		bSizer31.Add( bSizer33, 1, wx.EXPAND, 5 )
