@@ -206,13 +206,13 @@ class ButtonBinding(AbstractBinding):
 
 class BindingContext(object):
 	def __init__(self, default_object = None):
-		self.bindings = []
-		self.default_object = default_object
+		self._bindings = []
+		self._default_object = default_object
 		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding]
 
 	def auto_bind(self, view, my_object = None, callback_auto_syncing=None, callback_auto_synced=None):
 		if my_object is None:
-			my_object = self.default_object
+			my_object = self._default_object
 
 		view_vars = vars(view)
 		object_vars = dir(my_object) # use dir instead of vars because we want methods to bind them to buttons
@@ -233,8 +233,8 @@ class BindingContext(object):
 
 	def add(self, binding):
 		if binding.object is None:
-			if self.default_object is not None:
-				binding.object = self.default_object
+			if self._default_object is not None:
+				binding.object = self._default_object
 			else:
 				raise Exception("No binding object specified") 
 
@@ -242,25 +242,25 @@ class BindingContext(object):
 		if isinstance(binding.object, AutoBindingMixin):
 			binding.object._binding_context = self
 
-		self.bindings.append(binding)
+		self._bindings.append(binding)
 
 	def sync_ctrls_to_objects(self):
-		for b in self.bindings:
+		for b in self._bindings:
 			b.sync_ctrl_to_object()
 
 	def sync_objects_to_ctrls(self):
-		for b in self.bindings:
+		for b in self._bindings:
 			b.sync_object_to_ctrl()
 
-	def get_bindings_by_property(self, property):
-		return [b for b in self.bindings if b.property == property]
+	def sync_objects_with_property_to_ctrls(self, property):
+		for b in [b for b in self._bindings if b.property == property]:
+			b.sync_object_to_ctrl();
 
 class AutoBindingMixin(object):
 
 	def __setattr__(self, name, value):
 		super(AutoBindingMixin, self).__setattr__(name, value)
 
-		# if this model is used by a binding context
+		# if this model is used by a binding context sync it automatically
 		if hasattr(self, '_binding_context'):
-			for b in self._binding_context.get_bindings_by_property(name):
-				b.sync_object_to_ctrl();
+			self._binding_context.sync_objects_with_property_to_ctrls(name)
