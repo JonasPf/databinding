@@ -15,19 +15,15 @@ def wxdate2pytime(wxdate):
 	return datetime.time(hour=wxdate.GetHour(), minute=wxdate.GetMinute(), second=wxdate.GetSecond())
 
 class AbstractBinding(object):
-	def __init__(self, ctrl, my_property, my_object = None, direction = '=', callback_auto_syncing = None, callback_auto_synced = None):
-		assert direction in ('<', '=', '>')
-
+	def __init__(self, ctrl, my_property, my_object = None, callback_auto_syncing = None, callback_auto_synced = None):
 		self.ctrl = ctrl
 		self.property = my_property
 		self.object = my_object
-		self.direction = direction
 
 		self.callback_auto_synced = callback_auto_synced
 		self.callback_auto_syncing = callback_auto_syncing
 
-		if self.direction in ('=', '>'):
-			self._init_events()
+		self._init_events()
 
 	def _init_events(self):
 		pass
@@ -80,22 +76,20 @@ class TextBinding(AbstractBinding):
 		self.ctrl.Bind(wx.EVT_TEXT, self._on_change)
 
 	def sync_ctrl_to_object(self):
-		if self.direction != '<':
-			# TODO: Only update if something has changed
-			setattr(self.object, self.property, self.ctrl.GetValue())
-			return True
+		# TODO: Only update if something has changed
+		setattr(self.object, self.property, self.ctrl.GetValue())
+		return True
 
 	def sync_object_to_ctrl(self):
-		if self.direction != '>':
-			new_text = getattr(self.object, self.property)
+		new_text = getattr(self.object, self.property)
 
-			if new_text is None:
-				new_text = ''
+		if new_text is None:
+			new_text = ''
 
-			if self.ctrl.GetValue() != new_text:
-				self.ctrl.ChangeValue(new_text)
-				self.ctrl.SetInsertionPoint(self.ctrl.GetLastPosition())
-				return True
+		if self.ctrl.GetValue() != new_text:
+			self.ctrl.ChangeValue(new_text)
+			self.ctrl.SetInsertionPoint(self.ctrl.GetLastPosition())
+			return True
 
 		return False
 
@@ -126,23 +120,21 @@ class TimeBinding(AbstractBinding):
 		self.ctrl.Bind(wx.lib.masked.EVT_TIMEUPDATE, self._on_change)
 
 	def sync_ctrl_to_object(self):
-		if self.direction != '<':
-			new_value = wxdate2pytime(self.ctrl.GetValue(as_wxDateTime=True))
-			old_value = getattr(self.object, self.property)
+		new_value = wxdate2pytime(self.ctrl.GetValue(as_wxDateTime=True))
+		old_value = getattr(self.object, self.property)
 
-			if new_value != old_value:
-				setattr(self.object, self.property, new_value)
-			return True
+		if new_value != old_value:
+			setattr(self.object, self.property, new_value)
+		return True
 
 		return False
 
 	def sync_object_to_ctrl(self):
-		if self.direction != '>':
-			new_time = pytime2wxdate(getattr(self.object, self.property))
+		new_time = pytime2wxdate(getattr(self.object, self.property))
 
-			if self.ctrl.GetValue(as_wxDateTime=True) != new_time:
-				self.ctrl.SetValue(new_time)
-				return True
+		if self.ctrl.GetValue(as_wxDateTime=True) != new_time:
+			self.ctrl.SetValue(new_time)
+			return True
 
 		return False
 
@@ -155,22 +147,20 @@ class CheckBoxBinding(AbstractBinding):
 		self.ctrl.Bind(wx.EVT_CHECKBOX, self._on_change)
 
 	def sync_ctrl_to_object(self):
-		if self.direction != '<':
-			if self.ctrl.IsChecked() != getattr(self.object, self.property):
-				setattr(self.object, self.property, self.ctrl.IsChecked())
-				return True
+		if self.ctrl.IsChecked() != getattr(self.object, self.property):
+			setattr(self.object, self.property, self.ctrl.IsChecked())
+			return True
 
 		return False
 
 	def sync_object_to_ctrl(self):
-		if self.direction != '>':
-			new_value = getattr(self.object, self.property)
+		new_value = getattr(self.object, self.property)
 
-			if self.ctrl.IsChecked() != new_value:
-				self.ctrl.SetValue(new_value)
-				return True
+		if self.ctrl.IsChecked() != new_value:
+			self.ctrl.SetValue(new_value)
+			return True
 
-			return False
+		return False
 
 	@staticmethod
 	def autobind(ctrl, value):

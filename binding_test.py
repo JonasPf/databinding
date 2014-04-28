@@ -36,17 +36,6 @@ class MyFrame(binding_test_ui.MainFrame):
         # if the object has properties with the same name and compatible type
         self.binding_context.auto_bind(self, callback_auto_syncing=self.auto_syncing)
 
-        # the direction parameter controls the direction of the synchonization:
-        # > from control to object
-        # < from object to control
-        # = both ways
-        self.binding_context.add(TextBinding(self.read_only_name, 'name', direction='<', callback_auto_syncing=self.auto_syncing))
-        self.binding_context.add(HideBinding(self.read_only_name, 'name')) # no direction or autobinding, this only works from object to control
-        self.binding_context.add(TextBinding(self.write_only_surname, 'surname', direction='>', callback_auto_syncing=self.auto_syncing))
-        self.binding_context.add(LabelBinding(self.read_only_active, 'active', callback_auto_syncing=self.auto_syncing))
-        self.binding_context.add(LabelBinding(self.read_only_time, 'time', callback_auto_syncing=self.auto_syncing))
-
-
         # use a non-default object by passing it to the *Binding classes - in this case 'self'
         self.binding_context.add(ButtonBinding(self.sync_object_to_ctrls, 'on_sync_object_to_ctrls', self))
         self.binding_context.add(ButtonBinding(self.sync_ctrls_to_object, 'on_sync_ctrls_to_object', self))
