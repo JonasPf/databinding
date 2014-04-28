@@ -2,6 +2,13 @@ import wx
 import logging
 import datetime
 
+# TODO:
+# - Add example for enable/disable
+# - Add example for colour
+# - Add example for button
+# - Allow prefixes (on_ or ui_)
+# - Add documention
+
 # only works with unicode version of wxpython
 
 logger = logging.getLogger(__name__)
@@ -231,6 +238,10 @@ class BindingContext(object):
 			else:
 				raise Exception("No binding object specified") 
 
+		# add the binding context to the class to allow automatic object -> ctrl syncing
+		if isinstance(binding.object, AutoBindingMixin):
+			binding.object._binding_context = self
+
 		self.bindings.append(binding)
 
 	def sync_ctrls_to_objects(self):
@@ -240,3 +251,16 @@ class BindingContext(object):
 	def sync_objects_to_ctrls(self):
 		for b in self.bindings:
 			b.sync_object_to_ctrl()
+
+	def get_bindings_by_property(self, property):
+		return [b for b in self.bindings if b.property == property]
+
+class AutoBindingMixin(object):
+
+	def __setattr__(self, name, value):
+		super(AutoBindingMixin, self).__setattr__(name, value)
+
+		# if this model is used by a binding context
+		if hasattr(self, '_binding_context'):
+			for b in self._binding_context.get_bindings_by_property(name):
+				b.sync_object_to_ctrl();

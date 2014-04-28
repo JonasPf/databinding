@@ -5,9 +5,7 @@ import datetime
 import logging
 from databinding import *
 
-# TODO: Allow prefixes (e.g. on_ or ui_)
-
-class Model(object):
+class Model(AutoBindingMixin, object):
     def __init__(self):
         self.name = "Donald"
         self.surname = "Duck"
@@ -42,12 +40,8 @@ class MyFrame(binding_test_ui.MainFrame):
         self.binding_context.auto_bind(self, callback_auto_synced=self.print_model)
 
         # use a non-default object by passing it to the *Binding classes - in this case 'self'
-        # TODO: Use auto button binding
-        self.binding_context.add(ButtonBinding(self.sync_object_to_ctrls, 'on_sync_object_to_ctrls', self))
 
-        self.binding_context.sync_objects_to_ctrls()
-
-    def on_sync_object_to_ctrls(self):
+        # Sync once to intialise the controls
         self.binding_context.sync_objects_to_ctrls()
 
     def _init_timectrl(self):

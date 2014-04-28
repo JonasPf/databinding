@@ -63,14 +63,6 @@ class MainFrame ( wx.Frame ):
 		
 		bSizer31.Add( sbSizer5, 0, 0, 5 )
 		
-		bSizer33 = wx.BoxSizer( wx.HORIZONTAL )
-		
-		self.sync_object_to_ctrls = wx.Button( self, wx.ID_ANY, u"Sync Object to Ctrls", wx.DefaultPosition, wx.DefaultSize, 0 )
-		bSizer33.Add( self.sync_object_to_ctrls, 0, wx.ALL, 5 )
-		
-		
-		bSizer31.Add( bSizer33, 1, wx.EXPAND, 5 )
-		
 		
 		self.SetSizer( bSizer31 )
 		self.Layout()
