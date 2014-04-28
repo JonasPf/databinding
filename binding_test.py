@@ -24,9 +24,14 @@ class Model(object):
     def change_time(self):
         self.time = datetime.datetime.now().time()
 
+    def __unicode__(self):
+        return "Name: {}\nSurname: {}\nActive: {}\nTime: {}".format(self.name, self.surname, self.active, self.time)
+
 class MyFrame(binding_test_ui.MainFrame):
     def __init__(self, model):
         binding_test_ui.MainFrame.__init__(self, None)
+
+        self.model = model
 
         self.autosync = True
 
@@ -34,7 +39,7 @@ class MyFrame(binding_test_ui.MainFrame):
 
         # Automatically binds controls if they are exposed as properties by the view and
         # if the object has properties with the same name and compatible type
-        self.binding_context.auto_bind(self, callback_auto_syncing=self.auto_syncing)
+        self.binding_context.auto_bind(self, callback_auto_synced=self.print_model)
 
         # use a non-default object by passing it to the *Binding classes - in this case 'self'
         self.binding_context.add(ButtonBinding(self.sync_object_to_ctrls, 'on_sync_object_to_ctrls', self))
@@ -56,6 +61,12 @@ class MyFrame(binding_test_ui.MainFrame):
     @property
     def sync_ctrls_to_objects_enabled(self):
         return not self.autosync
+
+    def print_model(self, binding):
+        print "---------------------------"
+        print "The current model state is:"
+        print unicode(self.model)
+        print "---------------------------"
 
     def auto_synced(self, binding):
         if self.autosync: # Autosync activated
