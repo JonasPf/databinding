@@ -1,6 +1,6 @@
 import wx
 import wx.lib.masked
-import binding_test_ui
+import simple_ctrls_ui
 import datetime
 import logging
 import sys
@@ -30,9 +30,9 @@ class Model(AutoBindingMixin, object):
     def __unicode__(self):
         return "Name: {}\nActive: {}\nTime: {}".format(self.name, self.active, self.time)
 
-class MyFrame(binding_test_ui.MainFrame):
+class MyFrame(simple_ctrls_ui.MainFrame):
     def __init__(self, model):
-        binding_test_ui.MainFrame.__init__(self, None)
+        simple_ctrls_ui.MainFrame.__init__(self, None)
 
         self.model = model
 
