@@ -1,6 +1,7 @@
 import wx
 import logging
 import datetime
+import wx.lib.platebtn
 from types import NoneType
 
 # TODO:
@@ -203,7 +204,7 @@ class ButtonBinding(AbstractBinding):
 
 	@staticmethod
 	def autobind(ctrl, value):
-		return isinstance(ctrl, wx.Button) and callable(value)
+		return (isinstance(ctrl, wx.Button) or isinstance(ctrl, wx.lib.platebtn.PlateButton)) and callable(value)
 
 class ColourBinding(AbstractBinding):
 	def _init_events(self):
