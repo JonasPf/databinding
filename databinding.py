@@ -252,10 +252,6 @@ class BindingContext(object):
 		for b in self._bindings:
 			b.sync_object_to_ctrl()
 
-	def sync_objects_with_property_to_ctrls(self, property):
-		for b in [b for b in self._bindings if b.property == property]:
-			b.sync_object_to_ctrl();
-
 class AutoBindingMixin(object):
 
 	def __setattr__(self, name, value):
@@ -263,4 +259,4 @@ class AutoBindingMixin(object):
 
 		# if this model is used by a binding context sync it automatically
 		if hasattr(self, '_binding_context'):
-			self._binding_context.sync_objects_with_property_to_ctrls(name)
+			self._binding_context.sync_objects_to_ctrls()

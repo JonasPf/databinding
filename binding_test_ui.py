@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*- 
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version Nov  6 2013)
+## Python code generated with wxFormBuilder (version Jun  6 2014)
 ## http://www.wxformbuilder.org/
 ##
 ## PLEASE DO "NOT" EDIT THIS FILE!
@@ -56,6 +56,17 @@ class MainFrame ( wx.Frame ):
 		
 		self.change_time = wx.Button( self, wx.ID_ANY, u"Change in Object", wx.DefaultPosition, wx.DefaultSize, 0 )
 		gSizer1.Add( self.change_time, 0, wx.ALL, 5 )
+		
+		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, u"Object:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText4.Wrap( -1 )
+		gSizer1.Add( self.m_staticText4, 0, wx.ALL, 5 )
+		
+		self.object = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.object.Wrap( -1 )
+		gSizer1.Add( self.object, 0, wx.ALL, 5 )
+		
+		
+		gSizer1.AddSpacer( ( 0, 0), 1, wx.EXPAND, 5 )
 		
 		
 		sbSizer5.Add( gSizer1, 0, 0, 5 )
