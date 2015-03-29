@@ -13,6 +13,7 @@ class Model(AutoBindingMixin, object):
         self.name = "Donald"
         self.active = True
         self.time = datetime.datetime.now().time()
+        self.colour_picker = (255, 0, 0)
 
     def change_name(self):
         self.name = "Mickey"
@@ -23,12 +24,16 @@ class Model(AutoBindingMixin, object):
     def change_time(self):
         self.time = datetime.datetime.now().time()
 
+    def change_colour(self):
+        print "test"
+        self.colour_picker = (127, 127, 127)
+
     @property
     def object(self):
         return unicode(self)
 
     def __unicode__(self):
-        return "Name: {}\nActive: {}\nTime: {}".format(self.name, self.active, self.time)
+        return "Name: {}\nActive: {}\nTime: {}\nColour: {}".format(self.name, self.active, self.time, self.colour_picker)
 
 class MyFrame(simple_ctrls_ui.MainFrame):
     def __init__(self, model):

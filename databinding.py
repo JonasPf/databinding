@@ -4,7 +4,6 @@ import datetime
 
 # TODO:
 # - Add example for enable/disable
-# - Add example for colour
 # - Add example for button
 # - Allow prefixes (on_ or ui_)
 # - Add documention
@@ -204,11 +203,38 @@ class ButtonBinding(AbstractBinding):
 	def autobind(ctrl, value):
 		return isinstance(ctrl, wx.Button) and callable(value)
 
+class ColourBinding(AbstractBinding):
+	def _init_events(self):
+		self.ctrl.Bind(wx.EVT_COLOURPICKER_CHANGED, self._on_change)
+
+	def sync_ctrl_to_object(self):
+                new_value = self.ctrl.GetColour().Get()
+                old_value = getattr(self.object, self.property)
+
+                if new_value != old_value:
+                        setattr(self.object, self.property, new_value)
+                return True
+
+		return False
+
+	def sync_object_to_ctrl(self):
+                new_value = getattr(self.object, self.property)
+
+                if self.ctrl.GetColour() != new_value:
+                        self.ctrl.SetColour(new_value)
+                        return True
+
+		return False
+
+	@staticmethod
+	def autobind(ctrl, value):
+		return isinstance(ctrl, wx.ColourPickerCtrl) and isinstance(value, tuple)
+
 class BindingContext(object):
 	def __init__(self, default_object = None):
 		self._bindings = []
 		self._default_object = default_object
-		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding]
+		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding, ColourBinding]
 
 	def auto_bind(self, view, my_object = None, callback_auto_syncing=None, callback_auto_synced=None):
 		if my_object is None:

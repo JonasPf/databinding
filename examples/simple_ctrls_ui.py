@@ -57,6 +57,16 @@ class MainFrame ( wx.Frame ):
 		self.change_time = wx.Button( self, wx.ID_ANY, u"Change in Object", wx.DefaultPosition, wx.DefaultSize, 0 )
 		gSizer1.Add( self.change_time, 0, wx.ALL, 5 )
 		
+		self.m_staticText7 = wx.StaticText( self, wx.ID_ANY, u"Colour:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText7.Wrap( -1 )
+		gSizer1.Add( self.m_staticText7, 0, wx.ALL, 5 )
+		
+		self.colour_picker = wx.ColourPickerCtrl( self, wx.ID_ANY, wx.BLACK, wx.DefaultPosition, wx.DefaultSize, wx.CLRP_DEFAULT_STYLE )
+		gSizer1.Add( self.colour_picker, 0, wx.ALL, 5 )
+		
+		self.change_colour = wx.Button( self, wx.ID_ANY, u"Change in Object", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gSizer1.Add( self.change_colour, 0, wx.ALL, 5 )
+		
 		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, u"Object:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText4.Wrap( -1 )
 		gSizer1.Add( self.m_staticText4, 0, wx.ALL, 5 )
