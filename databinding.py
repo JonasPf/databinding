@@ -215,7 +215,7 @@ class ColourBinding(AbstractBinding):
 
                 if new_value != old_value:
                         setattr(self.object, self.property, new_value)
-                return True
+                        return True
 
 		return False
 
