@@ -1,9 +1,11 @@
 import wx
 import logging
 import datetime
+from types import NoneType
 
 # TODO:
 # - Add example for enable/disable
+# - Add example for hide
 # - Add example for button
 # - Allow prefixes (on_ or ui_)
 # - Add documention
@@ -230,11 +232,39 @@ class ColourBinding(AbstractBinding):
 	def autobind(ctrl, value):
 		return isinstance(ctrl, wx.ColourPickerCtrl) and isinstance(value, tuple)
 
+class DirPickerBinding(TextBinding):
+	def _init_events(self):
+		self.ctrl.Bind(wx.EVT_DIRPICKER_CHANGED, self._on_change)
+
+	def sync_ctrl_to_object(self):
+                new_value = self.ctrl.GetPath()
+                old_value = getattr(self.object, self.property)
+
+                if new_value != old_value:
+                        setattr(self.object, self.property, new_value)
+                        return True
+
+		return False
+
+	def sync_object_to_ctrl(self):
+		new_path = getattr(self.object, self.property)
+                old_path = self.ctrl.GetPath()
+
+                if old_path != new_path:
+			self.ctrl.SetPath(new_path)
+			return True
+
+		return False
+
+	@staticmethod
+	def autobind(ctrl, value):
+		return isinstance(ctrl, wx.DirPickerCtrl) and (isinstance(value, str) or isinstance(value, unicode) or isinstance(value, NoneType))
+
 class BindingContext(object):
 	def __init__(self, default_object = None):
 		self._bindings = []
 		self._default_object = default_object
-		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding, ColourBinding]
+		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding, ColourBinding, DirPickerBinding]
 
 	def auto_bind(self, view, my_object = None, callback_auto_syncing=None, callback_auto_synced=None):
 		if my_object is None:

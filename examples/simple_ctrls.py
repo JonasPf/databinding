@@ -14,6 +14,7 @@ class Model(AutoBindingMixin, object):
         self.active = True
         self.time = datetime.datetime.now().time()
         self.colour_picker = (255, 0, 0)
+        self.dir_picker = ''
 
     def change_name(self):
         self.name = "Mickey"
@@ -25,20 +26,21 @@ class Model(AutoBindingMixin, object):
         self.time = datetime.datetime.now().time()
 
     def change_colour(self):
-        print "test"
         self.colour_picker = (127, 127, 127)
+
+    def change_dir(self):
+        self.dir_picker = os.path.dirname(os.path.abspath(__file__))
 
     @property
     def object(self):
         return unicode(self)
 
     def __unicode__(self):
-        return "Name: {}\nActive: {}\nTime: {}\nColour: {}".format(self.name, self.active, self.time, self.colour_picker)
+        return "Name: {}\nActive: {}\nTime: {}\nColour: {}\nDirectory: {}".format(self.name, self.active, self.time, self.colour_picker, self.dir_picker)
 
 class MyFrame(simple_ctrls_ui.MainFrame):
     def __init__(self, model):
         simple_ctrls_ui.MainFrame.__init__(self, None)
-
         self.model = model
 
         self.binding_context = BindingContext(model)

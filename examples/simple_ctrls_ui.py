@@ -67,6 +67,16 @@ class MainFrame ( wx.Frame ):
 		self.change_colour = wx.Button( self, wx.ID_ANY, u"Change in Object", wx.DefaultPosition, wx.DefaultSize, 0 )
 		gSizer1.Add( self.change_colour, 0, wx.ALL, 5 )
 		
+		self.m_staticText71 = wx.StaticText( self, wx.ID_ANY, u"Directory:", wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.m_staticText71.Wrap( -1 )
+		gSizer1.Add( self.m_staticText71, 0, wx.ALL, 5 )
+		
+		self.dir_picker = wx.DirPickerCtrl( self, wx.ID_ANY, wx.EmptyString, u"Select a folder", wx.DefaultPosition, wx.DefaultSize, wx.DIRP_DEFAULT_STYLE )
+		gSizer1.Add( self.dir_picker, 0, wx.ALL, 5 )
+		
+		self.change_dir = wx.Button( self, wx.ID_ANY, u"Change in Object", wx.DefaultPosition, wx.DefaultSize, 0 )
+		gSizer1.Add( self.change_dir, 0, wx.ALL, 5 )
+		
 		self.m_staticText4 = wx.StaticText( self, wx.ID_ANY, u"Object:", wx.DefaultPosition, wx.DefaultSize, 0 )
 		self.m_staticText4.Wrap( -1 )
 		gSizer1.Add( self.m_staticText4, 0, wx.ALL, 5 )
