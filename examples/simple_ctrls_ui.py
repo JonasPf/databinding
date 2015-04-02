@@ -118,6 +118,18 @@ class MainFrame ( wx.Frame ):
 		
 		self.toolbar.Realize() 
 		
+		self.m_menubar1 = wx.MenuBar( 0 )
+		self.m_menu1 = wx.Menu()
+		self.item1 = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Item 1", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu1.AppendItem( self.item1 )
+		
+		self.item2 = wx.MenuItem( self.m_menu1, wx.ID_ANY, u"Item 2", wx.EmptyString, wx.ITEM_NORMAL )
+		self.m_menu1.AppendItem( self.item2 )
+		
+		self.m_menubar1.Append( self.m_menu1, u"Menu" ) 
+		
+		self.SetMenuBar( self.m_menubar1 )
+		
 		
 		self.Centre( wx.BOTH )
 	

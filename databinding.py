@@ -64,6 +64,26 @@ class AbstractBinding(object):
 BOOLEAN_LABEL_CONVERSION = {True: "Yes", False: "No"}
 
 
+class MenuBinding(AbstractBinding):
+    def _init_events(self):
+        self.ctrl.GetMenu().Bind(wx.EVT_MENU, self._on_select, self.ctrl)
+
+    def _on_select(self, e):
+        if callable(self.callback_auto_syncing):
+            if self.callback_auto_syncing(self) is False:
+                return  # Veto, don't execute the function
+
+        function = getattr(self.object, self.property)
+        function()
+
+        if callable(self.callback_auto_synced):
+            self.callback_auto_synced(self)
+
+    @staticmethod
+    def autobind(ctrl, value):
+        return isinstance(ctrl, wx.MenuItem) and callable(value)
+
+
 class LabelBinding(AbstractBinding):
     def sync_object_to_ctrl(self):
         new_text = getattr(self.object, self.property)
@@ -324,7 +344,7 @@ class BindingContext(object):
         self._bindings = []
         self._default_object = default_object
         self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding, ColourBinding,
-                                 DirPickerBinding, ToolBarBinding, ToolBinding]
+                                 DirPickerBinding, ToolBarBinding, ToolBinding, MenuBinding]
 
     def auto_bind(self, view, my_object=None, callback_auto_syncing=None, callback_auto_synced=None):
         if my_object is None:
@@ -354,7 +374,7 @@ class BindingContext(object):
             else:
                 raise Exception("No binding object specified")
 
-            # add the binding context to the class to allow automatic object -> ctrl syncing
+                # add the binding context to the class to allow automatic object -> ctrl syncing
         if isinstance(binding.object, AutoBindingMixin):
             binding.object._binding_context = self
 

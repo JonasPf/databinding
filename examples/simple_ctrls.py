@@ -31,6 +31,12 @@ class Model(AutoBindingMixin, object):
     def change_dir(self):
         self.dir_picker = os.path.dirname(os.path.abspath(__file__))
 
+    def item1(self):
+        self.clicks += "Clicked: Item 1\n"
+
+    def item2(self):
+        self.clicks += "Clicked: Item 2\n"
+
     def tool1(self):
         self.clicks += "Clicked: Tool 1\n"
 
