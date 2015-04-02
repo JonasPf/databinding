@@ -1,12 +1,11 @@
 import wx
 import wx.lib.masked
 import simple_ctrls_ui
-import datetime
-import logging
 import sys
 import os.path
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../'))
 from databinding import *
+
 
 class Model(AutoBindingMixin, object):
     def __init__(self):
