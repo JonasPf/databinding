@@ -15,6 +15,7 @@ class Model(AutoBindingMixin, object):
         self.time = datetime.datetime.now().time()
         self.colour_picker = (255, 0, 0)
         self.dir_picker = ''
+        self.clicks = ''
 
     def change_name(self):
         self.name = "Mickey"
@@ -30,6 +31,13 @@ class Model(AutoBindingMixin, object):
 
     def change_dir(self):
         self.dir_picker = os.path.dirname(os.path.abspath(__file__))
+
+    def tool1(self):
+        self.clicks += "Clicked: Tool 1\n"
+
+    def toolbar(self, id):
+        # Individual tool method take precedence over toolbar bindings.
+        self.clicks += "Clicked: Toolbar with tool id {}\n".format(id)
 
     @property
     def object(self):

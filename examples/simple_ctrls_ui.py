@@ -10,6 +10,9 @@
 import wx
 import wx.xrc
 
+TOOL1 = 1000
+TOOL2 = 1001
+
 ###########################################################################
 ## Class MainFrame
 ###########################################################################
@@ -94,9 +97,27 @@ class MainFrame ( wx.Frame ):
 		
 		bSizer31.Add( sbSizer5, 0, 0, 5 )
 		
+		sbSizer2 = wx.StaticBoxSizer( wx.StaticBox( self, wx.ID_ANY, u"Clicks" ), wx.VERTICAL )
+		
+		self.clicks = wx.StaticText( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+		self.clicks.Wrap( -1 )
+		self.clicks.SetMinSize( wx.Size( -1,200 ) )
+		
+		sbSizer2.Add( self.clicks, 0, wx.ALL, 5 )
+		
+		
+		bSizer31.Add( sbSizer2, 1, wx.EXPAND, 5 )
+		
 		
 		self.SetSizer( bSizer31 )
 		self.Layout()
+		self.toolbar = self.CreateToolBar( wx.TB_NOICONS|wx.TB_TEXT, wx.ID_ANY ) 
+		self.tool1 = self.toolbar.AddLabelTool( TOOL1, u"Tool 1", wx.NullBitmap, wx.NullBitmap, wx.ITEM_NORMAL, wx.EmptyString, wx.EmptyString, None ) 
+		
+		self.tool2 = self.toolbar.AddLabelTool( TOOL2, u"Tool 2", wx.NullBitmap, wx.NullBitmap, wx.ITEM_NORMAL, wx.EmptyString, wx.EmptyString, None ) 
+		
+		self.toolbar.Realize() 
+		
 		
 		self.Centre( wx.BOTH )
 	

@@ -261,11 +261,52 @@ class DirPickerBinding(TextBinding):
 	def autobind(ctrl, value):
 		return isinstance(ctrl, wx.DirPickerCtrl) and (isinstance(value, str) or isinstance(value, unicode) or isinstance(value, NoneType))
 
+class ToolBarBinding(AbstractBinding):
+	def _init_events(self):
+		count = self.ctrl.GetToolsCount()
+		for i in range(count):
+			tool = self.ctrl.GetToolByPos(i)
+			self.ctrl.Bind(wx.EVT_TOOL, self._on_click, id=tool.GetId())
+
+	def _on_click(self, e):
+		if callable(self.callback_auto_syncing):
+			if self.callback_auto_syncing(self) is False:
+				return # Veto, don't execute the function
+
+		function = getattr(self.object, self.property)
+		function(e.GetId())
+
+		if callable(self.callback_auto_synced):
+			self.callback_auto_synced(self)
+
+	@staticmethod
+	def autobind(ctrl, value):
+		return isinstance(ctrl, wx.ToolBar) and callable(value)
+
+class ToolBinding(AbstractBinding):
+	def _init_events(self):
+		self.ctrl.ToolBar.Bind(wx.EVT_TOOL, self._on_click, id=self.ctrl.GetId())
+
+	def _on_click(self, e):
+		if callable(self.callback_auto_syncing):
+			if self.callback_auto_syncing(self) is False:
+				return # Veto, don't execute the function
+
+		function = getattr(self.object, self.property)
+		function()
+
+		if callable(self.callback_auto_synced):
+			self.callback_auto_synced(self)
+
+	@staticmethod
+	def autobind(ctrl, value):
+		return isinstance(ctrl, wx.ToolBarToolBase) and callable(value)
+
 class BindingContext(object):
 	def __init__(self, default_object = None):
 		self._bindings = []
 		self._default_object = default_object
-		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding, ColourBinding, DirPickerBinding]
+		self.autobind_classes = [TextBinding, LabelBinding, ButtonBinding, CheckBoxBinding, TimeBinding, ColourBinding, DirPickerBinding, ToolBarBinding, ToolBinding]
 
 	def auto_bind(self, view, my_object = None, callback_auto_syncing=None, callback_auto_synced=None):
 		if my_object is None:
