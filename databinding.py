@@ -8,7 +8,6 @@ from types import NoneType
 # TODO:
 # - Add example for enable/disable
 # - Add example for hide
-# - Add example for button
 # - Allow prefixes (on_ or ui_)
 # - Add documention
 
